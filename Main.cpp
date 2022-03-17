@@ -3,10 +3,13 @@
 
 int main()
 {
-    array<array<uc, 4>, 4> mat = {{'1', '2', '3', '4'}};
-    pair<int, int> blankPos = make_pair(1, 1);
-    Game g(mat, ' ', 0, "", blankPos);
+    array<array<uc, WIDTH>, WIDTH> initial_state = Util::Read();
+    Game initial_game(initial_state, ' ', 0, "", Util::GetBlankPosition(initial_state));
 
-    cout << "o23la\n";
+    array<array<uc, WIDTH>, WIDTH> final_state = Util::Read();
+    Game final_game(final_state, ' ', -1, "", Util::GetBlankPosition(final_state));
+
+    Algorithms::IDFS(initial_game, final_game);
+
     return 0;
 }

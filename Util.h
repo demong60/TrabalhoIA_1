@@ -6,6 +6,7 @@ using namespace std;
 #define uc unsigned char
 
 #include "Game.h"
+#include "Algorithms.h"
 
 namespace Util
 {
@@ -14,15 +15,15 @@ namespace Util
      * @param config
      * @return long long
      */
-    long long Hash(array<array<uc, 4>, 4> &config);
+    long long Hash(array<array<uc, WIDTH>, WIDTH> &config);
 
     /**
-     * @brief Returns a char corresponding to the direction of the move given.
+     * @brief Converts a give move, to the corresponding direction.
      *
      * @param move
      * @return char
      */
-    char Dir(pair<uc, uc> &move);
+    char MoveToDirection(pair<int, int> &move);
 
     /**
      * @brief Creates all the children of current_game and inserts it in out_children
@@ -33,14 +34,14 @@ namespace Util
     void CreateChildren(Game &current_game, vector<Game> &out_children);
 
     /**
-     * @brief Reads a game state from standard input, and inserts it in mat
+     * @brief Reads a game state from standard input, and inserts it in state
      *
-     * @param out_mat
+     * @param out_state
      */
-    void Read(array<array<uc, WIDTH>, WIDTH> &out_mat);
+    array<array<uc, WIDTH>, WIDTH> Read();
 
     /**
-     * @brief Prints out a game in a very beautyfull way :3
+     * @brief Prints out a game in a very beautiful way <3
      *
      * @param game
      */
@@ -52,25 +53,39 @@ namespace Util
      * @param initial
      * @param path
      */
-    void PrintDirections(Game &initial, string &path);
+    void PrintDirections(Game &initial, string &path, set<long long> &visited);
 
     /**
-     * @brief When a branch is no longer needed, this function updates the game matrix and removes the needed
+     * @brief When a branch is no longer needed, this function updates the game state and removes the needed
      * moves from the path
      *
-     * @param mat
+     * @param state
      * @param wrong_path
      * @param blank_pos
      */
-    void RemoveBranch(array<array<uc, WIDTH>, WIDTH> &mat, string &wrong_path, pair<uc, uc> &blank_pos);
+    void RemoveBranch(array<array<uc, WIDTH>, WIDTH> &state, string &wrong_path, pair<uc, uc> &blank_positon, set<long long> &visited);
 
     /**
-     * @brief Updates the game matrix to represent every new move made
+     * @brief Updates the game state to represent every new move made
      *
-     * @param mat
+     * @param state
      * @param direction
      * @param blank_pos
      */
-    void UpdatePath(array<array<uc, WIDTH>, 4> &mat, char direction, pair<uc, uc> &blank_pos);
+    void UpdatePath(array<array<uc, WIDTH>, WIDTH> &state, char direction, pair<uc, uc> &blank_positon, set<long long> &visited);
+
+    /**
+     * @brief
+     *
+     */
+    void UpdateState(Game &game, string &directions, array<array<uc, WIDTH>, WIDTH> &current_state, pair<uc, uc> &blank_position, set<long long> &visited);
+
+    /**
+     * @brief Get the Blank Position object
+     *
+     * @param state
+     * @return pair<uc, uc>
+     */
+    pair<uc, uc> GetBlankPosition(array<array<uc, WIDTH>, WIDTH> &state);
 
 }
