@@ -80,11 +80,10 @@ void Util::PrintDirections(Game &initial, string &path, set<long long> &visited)
     int size = (int)path.size();
     pair<int, int> blank_position = initial.blank_position;
 
-    array<array<uc, WIDTH>, WIDTH> current_config;
-    current_config = initial.state;
+    array<array<uc, WIDTH>, WIDTH> current_config = initial.state;
     Print(current_config);
 
-    int x = blank_position.first, y = blank_position.second;
+    int y = blank_position.first, x = blank_position.second;
     for (int i = 0; i < size; ++i)
     {
         switch (path[i])
@@ -114,8 +113,8 @@ void Util::PrintDirections(Game &initial, string &path, set<long long> &visited)
     }
 
     cout << "Solution found:  " << '\n'
-         << "Depth: " << size - 1 << '\n'
-         << "Explored States: " << visited.size() << '\n';
+         << "\tDepth: " << size << '\n'
+         << "\tExplored States: " << visited.size() << '\n';
 }
 
 void Util::RemoveBranch(array<array<uc, WIDTH>, WIDTH> &state, string &wrong_path, pair<uc, uc> &blank_position, set<long long> &visited)
@@ -211,4 +210,83 @@ pair<uc, uc> Util::GetBlankPosition(array<array<uc, WIDTH>, WIDTH> &state)
         }
     }
     return blank_position;
+}
+
+int Util::ManhattanDistance(pair<int, int> &pos1, pair<int, int> &pos2)
+{
+    return abs(pos1.first - pos2.first) + abs(pos1.second - pos2.second);
+}
+
+void Util::CreateMap(map<int, pair<int, int>> &out_map, Game &game)
+{
+    for (int row = 0; row < WIDTH; ++row)
+    {
+        for (int col = 0; col < WIDTH; ++col)
+        {
+            out_map[game.state[row][col]] = make_pair(row, col);
+        }
+    }
+}
+
+int Util::CalculateManhattanDistance(Game &game1, Game &game2)
+{
+    map<int, pair<int, int>> map1, map2;
+    // criar os mapas
+    CreateMap(map1, game1);
+    CreateMap(map2, game2);
+
+    int distance = 0;
+    for (int row = 0; row < WIDTH; ++row)
+    {
+        for (int col = 0; col < WIDTH; ++col)
+        {
+            distance += ManhattanDistance(map1[game1.state[row][col]], map2[game1.state[row][col]]);
+        }
+    }
+    return distance;
+}
+
+int Util::CalculateMisplaced(Game &game1, Game &game2)
+{
+    int misplaced = 0;
+    for (int row = 0; row < WIDTH; ++row)
+    {
+        for (int col = 0; col < WIDTH; ++col)
+        {
+            misplaced += (game1.state[row][col] != game2.state[row][col]);
+        }
+    }
+    return misplaced;
+}
+
+int Util::CountInversions(Game &game)
+{
+    vector<unsigned char> arr;
+    // Convert to a vector for easier readability
+    for (int row = 0; row < WIDTH; row++)
+        for (int col = 0; col < WIDTH; col++)
+            arr.push_back(game.state[row][col]);
+
+    int inversions = 0;
+    for (int i = 0; i < WIDTH * WIDTH; i++)
+    {
+        for (int j = i + 1; j < WIDTH * WIDTH; j++)
+        {
+            if (arr[i] > arr[j] && arr[j] != 0)
+                inversions++;
+        }
+    }
+
+    return inversions;
+}
+
+bool Util::CheckSolvability(Game &initial_game, Game &final_game)
+{
+    int inv_i = CountInversions(initial_game);
+    int inv_f = CountInversions(final_game);
+
+    bool cond_i = ((inv_i % 2 == 0) == (initial_game.blank_position.first % 2 == 1));
+    bool cond_f = ((inv_f % 2 == 0) == (final_game.blank_position.first % 2 == 1));
+
+    return (cond_i == cond_f);
 }

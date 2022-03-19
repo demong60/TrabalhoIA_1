@@ -18,7 +18,7 @@ namespace Util
     long long Hash(array<array<uc, WIDTH>, WIDTH> &config);
 
     /**
-     * @brief Converts a give move, to the corresponding direction.
+     * @brief Converts a given move, to the corresponding direction.
      *
      * @param move
      * @return char
@@ -88,4 +88,50 @@ namespace Util
      */
     pair<uc, uc> GetBlankPosition(array<array<uc, WIDTH>, WIDTH> &state);
 
+    /**
+     * @brief
+     *
+     * @param pos1
+     * @param pos2
+     * @return int
+     */
+    int ManhattanDistance(pair<int, int> &pos1, pair<int, int> &pos2);
+
+    /**
+     * @brief Create a Map object
+     *
+     * @param map
+     * @param game
+     */
+    void CreateMap(map<int, pair<int, int>> &out_map, Game &game);
+
+    /**
+     * @brief
+     *
+     * @param game1
+     * @param game2
+     * @return int
+     */
+    int CalculateManhattanDistance(Game &game1, Game &game2);
+
+    /**
+     * @brief
+     *
+     * @param game1
+     * @param game2
+     * @return int
+     */
+    int CalculateMisplaced(Game &game1, Game &game2);
+
+    /**
+     * @brief
+     *
+     */
+    int CountInversions(Game &game);
+
+    /**
+     * @brief
+     *
+     */
+    bool CheckSolvability(Game &initial_game, Game &final_game);
 }
