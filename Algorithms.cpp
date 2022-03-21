@@ -27,6 +27,7 @@ bool Algorithms::DFS(Game &initial_game, Game &final_game, int depth)
         stack.pop();
 
         Util::UpdateState(current_game, directions, current_state, blank_position, visited);
+        visited.insert(Util::Hash(current_game.state));
 
         if (Util::Hash(current_state) == Util::Hash(final_game.state))
         {
