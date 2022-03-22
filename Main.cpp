@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 bool Run(Game &initial_game, Game &final_game)
 {
-    system("clear");
+    int n = system("clear");
 
     cout << "Please choose algorithm to use: \n";
     cout << "\t1: DFS\n";
@@ -15,11 +15,12 @@ bool Run(Game &initial_game, Game &final_game)
     cout << "\t7: A* - Manhattan Distance Heuristic\n";
     int alg;
     cin >> alg;
-
+    clock_t start, end;
+    start = clock();
     switch (alg)
     {
     case 1:
-        Algorithms::BFS(initial_game, final_game);
+        Algorithms::DFS(initial_game, final_game);
         break;
     case 2:
         Algorithms::BFS(initial_game, final_game);
@@ -40,6 +41,9 @@ bool Run(Game &initial_game, Game &final_game)
         Algorithms::AStar(initial_game, final_game, Util::CalculateManhattanDistance);
         break;
     }
+    end = clock();
+    double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+    cout << "\nThe algorithm took " << time_taken << "s.\n";
 
     cout << "\n\n\n\n============\n\nDo you want to run another algorithm?\n";
     cout << "0: No\n";
@@ -74,12 +78,12 @@ int main(int argc, char **argv)
     while (Run(initial_game, final_game))
         ;
 
-    system("clear");
+    int n = system("clear");
     cout << "Thank you :)\n";
     cout << "Created by: \n";
-    cout << "\tMarco Gonçalves\n";
-    cout << "\tKlara Varga\n";
     cout << "\tHugo Cardante\n";
+    cout << "\tKlara Varga\n";
+    cout << "\tMarco Gonçalves\n";
 
     return 0;
 }
