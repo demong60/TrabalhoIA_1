@@ -20,7 +20,7 @@ bool Run(Game &initial_game, Game &final_game)
     switch (alg)
     {
     case 1:
-        Algorithms::DFS(initial_game, final_game);
+        Algorithms::LDFS(initial_game, final_game, 20);
         break;
     case 2:
         Algorithms::BFS(initial_game, final_game);

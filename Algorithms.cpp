@@ -51,46 +51,6 @@ bool Algorithms::LDFS(Game &initial_game, Game &final_game, int depth)
     return false;
 }
 
-void Algorithms::DFS(Game &initial_game, Game &final_game)
-{
-    stack<Game> stack;
-    stack.push(initial_game);
-    string directions = "";
-    pair<uc, uc> blank_position = initial_game.blank_position;
-
-    array<array<uc, WIDTH>, WIDTH> current_state;
-    current_state = initial_game.state;
-
-    set<long long> visited;
-
-    while (!stack.empty())
-    {
-        Game current_game = stack.top();
-        stack.pop();
-
-        Util::UpdateState(current_game, directions, current_state, blank_position, visited);
-        visited.insert(Util::Hash(current_game.state));
-
-        if (Util::Hash(current_state) == Util::Hash(final_game.state))
-        {
-            directions.erase(0, 1);
-            Util::PrintDirections(initial_game, directions, visited);
-            return;
-        }
-        vector<Game> children;
-        Util::CreateChildren(current_game, children);
-
-        for (Game child : children)
-        {
-            if (visited.find(Util::Hash(child.state)) == visited.end())
-            {
-                child.path.clear();
-                stack.push(child);
-            }
-        }
-    }
-}
-
 void Algorithms::IDFS(Game &initial, Game &final)
 {
     int i = 0;

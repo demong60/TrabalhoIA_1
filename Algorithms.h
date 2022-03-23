@@ -6,11 +6,6 @@ namespace Algorithms
     /**
      * @brief
      *
-     */
-    void DFS(Game &initial_game, Game &final_game);
-    /**
-     * @brief
-     *
      * @param initial
      * @param depth
      * @return true
