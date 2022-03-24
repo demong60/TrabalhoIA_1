@@ -16,6 +16,7 @@ bool Algorithms::LDFS(Game &initial_game, Game &final_game, int depth)
     string directions = "";
     pair<uc, uc> blank_position = initial_game.blank_position;
     int cnt = 0;
+    int max_depth = -1;
 
     array<array<uc, WIDTH>, WIDTH> current_state;
     current_state = initial_game.state;
@@ -27,6 +28,7 @@ bool Algorithms::LDFS(Game &initial_game, Game &final_game, int depth)
         Game current_game = stack.top();
         stack.pop();
         ++cnt;
+        max_depth = max(max_depth, current_game.depth);
 
         Util::UpdateState(current_game, directions, current_state, blank_position, visited);
         visited.insert(Util::Hash(current_game.state));
@@ -34,7 +36,7 @@ bool Algorithms::LDFS(Game &initial_game, Game &final_game, int depth)
         if (Util::Hash(current_state) == Util::Hash(final_game.state))
         {
             directions.erase(0, 1);
-            Util::PrintDirections(initial_game, directions, visited, cnt);
+            Util::PrintDirections(initial_game, directions, cnt, max_depth);
             return true;
         }
         vector<Game> children;
@@ -69,17 +71,19 @@ void Algorithms::BFS(Game &initial_game, Game &final_game)
     set<long long> visited;
     queue.push(initial_game);
     int cnt = 0;
+    int max_depth = -1;
     while (queue.size())
     {
         Game current_game = queue.front();
         queue.pop();
         ++cnt;
+        max_depth = max(max_depth, current_game.depth);
 
         visited.insert(Util::Hash(current_game.state));
 
         if (Util::Hash(current_game.state) == Util::Hash(final_game.state))
         {
-            Util::PrintDirections(initial_game, current_game.path, visited, cnt);
+            Util::PrintDirections(initial_game, current_game.path, cnt, max_depth);
             return;
         }
         vector<Game> children;
@@ -99,22 +103,21 @@ void Algorithms::AStar(Game &initial_game, Game &final_game, int (*heuristicFunc
 {
     // Min-heap
     priority_queue<pair<Game, int>, vector<pair<Game, int>>, Comparator> heap;
-    set<long long> visited;
-
+    set<long long> visited; 
     heap.push(make_pair(initial_game, heuristicFunction(initial_game, final_game))); // Depth 0
-    visited.insert(Util::Hash(initial_game.state));
     int cnt = 0;
+    int max_depth = -1;
 
     while (!heap.empty())
     {
         pair<Game, int> current_game = heap.top();
         heap.pop();
         ++cnt;
-        visited.insert(Util::Hash(current_game.first.state));
+        max_depth = max(max_depth, current_game.first.depth);
 
         if (Util::Hash(current_game.first.state) == Util::Hash(final_game.state))
         {
-            Util::PrintDirections(initial_game, current_game.first.path, visited, cnt);
+            Util::PrintDirections(initial_game, current_game.first.path, cnt, max_depth);
             return;
         }
 
@@ -122,11 +125,8 @@ void Algorithms::AStar(Game &initial_game, Game &final_game, int (*heuristicFunc
         Util::CreateChildren(current_game.first, children);
         for (Game child : children)
         {
-            if (visited.find(Util::Hash(child.state)) == visited.end())
-            {
-                int heuristic = heuristicFunction(child, final_game);
-                heap.push(make_pair(child, heuristic + child.depth));
-            }
+            int heuristic = heuristicFunction(child, final_game);
+            heap.push(make_pair(child, heuristic + child.depth));
         }
     }
 }
@@ -140,16 +140,19 @@ void Algorithms::Greedy(Game &initial_game, Game &final_game, int (*heuristicFun
     heap.push(make_pair(initial_game, heuristicFunction(initial_game, final_game))); // Depth 0
     visited.insert(Util::Hash(initial_game.state));
     int cnt = 0;
+    int max_depth = -1;
     while (!heap.empty())
     {
         pair<Game, int> current_game = heap.top();
         heap.pop();
         ++cnt;
+        max_depth = max(max_depth, current_game.first.depth);
+
         visited.insert(Util::Hash(current_game.first.state));
 
         if (Util::Hash(current_game.first.state) == Util::Hash(final_game.state))
         {
-            Util::PrintDirections(initial_game, current_game.first.path, visited, cnt);
+            Util::PrintDirections(initial_game, current_game.first.path, cnt, max_depth);
             return;
         }
 

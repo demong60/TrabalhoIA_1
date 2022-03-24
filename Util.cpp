@@ -75,7 +75,7 @@ void Util::Print(array<array<uc, WIDTH>, WIDTH> &game)
     cout << "============\n";
 }
 
-void Util::PrintDirections(Game &initial, string &path, set<long long> &visited, int explored)
+void Util::PrintDirections(Game &initial, string &path, int explored, int max_depth)
 {
     int size = (int)path.size();
     pair<int, int> blank_position = initial.blank_position;
@@ -114,8 +114,8 @@ void Util::PrintDirections(Game &initial, string &path, set<long long> &visited,
 
     cout << "Solution found:  " << '\n'
          << "\tDepth: " << size << '\n'
-         << "\tExplored States: " << visited.size() << '\n'
-         << "\tTotal explored states: " << explored << '\n';
+         << "\tTotal explored states: " << explored << '\n'
+         << "\tMax reached depth: " << max_depth << '\n';
 }
 
 void Util::RemoveBranch(array<array<uc, WIDTH>, WIDTH> &state, string &wrong_path, pair<uc, uc> &blank_position, set<long long> &visited)
