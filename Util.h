@@ -53,7 +53,7 @@ namespace Util
      * @param initial
      * @param path
      */
-    void PrintDirections(Game &initial, string &path, set<long long> &visited);
+    void PrintDirections(Game &initial, string &path, set<long long> &visited, int explored);
 
     /**
      * @brief When a branch is no longer needed, this function updates the game state and removes the needed

@@ -15,6 +15,7 @@ bool Run(Game &initial_game, Game &final_game)
     cout << "\t7: A* - Manhattan Distance Heuristic\n";
     int alg;
     cin >> alg;
+    n = system("clear");
     clock_t start, end;
     start = clock();
     switch (alg)
@@ -43,9 +44,9 @@ bool Run(Game &initial_game, Game &final_game)
     }
     end = clock();
     double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-    cout << "\nThe algorithm took " << time_taken << "s.\n";
+    cout << "\tTime: " << std::fixed << setprecision(3) << time_taken << "s.\n";
 
-    cout << "\n\n\n\n============\n\nDo you want to run another algorithm?\n";
+    cout << "\n\n============\n\nDo you want to run another algorithm?\n";
     cout << "0: No\n";
     cout << "1: Yes\n";
     int ans;
